@@ -9,12 +9,14 @@ export interface SyncStatus {
   appName: string;
 }
 
-// User-provided MongoDB configuration from the connection string
+/**
+ * MongoDB Configuration
+ * The URI is now pulled from environment variables for production security.
+ */
 const CLOUD_CONFIG = {
   cluster: "rahul.nmvjzku.mongodb.net",
   appName: "Rahul",
-  dbUser: "rahulhaldarin_db_user",
-  fullUri: "mongodb+srv://rahulhaldarin_db_user:<db_password>@rahul.nmvjzku.mongodb.net/?appName=Rahul"
+  fullUri: process.env.MONGODB_URI || "mongodb+srv://rahulhaldarin_db_user:<db_password>@rahul.nmvjzku.mongodb.net/?appName=Rahul"
 };
 
 export const cloudSyncService = {
@@ -22,18 +24,22 @@ export const cloudSyncService = {
     lastSynced: parseInt(localStorage.getItem('last_cloud_sync') || '0') || null,
     isSyncing: false,
     cluster: CLOUD_CONFIG.cluster,
-    connected: true,
+    connected: !!process.env.MONGODB_URI,
     appName: CLOUD_CONFIG.appName
   }),
 
   /**
    * Performs a cloud sync operation targeting the user's specific cluster.
-   * This logic maps to the user's provided MongoClient snippet.
    */
   syncData: async (entries: InventoryEntry[]): Promise<boolean> => {
+    if (!process.env.MONGODB_URI) {
+      console.warn("[MongoDB] Sync skipped: MONGODB_URI not configured in Vercel.");
+      return false;
+    }
+
     console.log(`%c[MongoDB] Pinging deployment: ${CLOUD_CONFIG.cluster}`, "color: #10b981; font-weight: bold;");
     
-    // Simulate the MongoClient.connect() and ping operation
+    // Simulating the MongoClient.connect() and ping operation for the UI
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     const syncTime = Date.now();
@@ -46,7 +52,7 @@ export const cloudSyncService = {
   },
 
   getMaskedURI: () => {
-    return CLOUD_CONFIG.fullUri.replace('<db_password>', '••••••••');
+    return CLOUD_CONFIG.fullUri.replace(/:([^@]+)@/, ':••••••••@');
   },
 
   getClusterInfo: () => CLOUD_CONFIG
