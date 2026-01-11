@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Precision Gram Tracker Pro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=Montserrat:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-primary: 'Plus Jakarta Sans', sans-serif;
+      --font-numeric: 'Space Grotesk', 'JetBrains Mono', monospace;
+      --font-header: 'Montserrat', sans-serif;
+    }
+    body {
+      font-family: var(--font-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .font-numeric { font-family: var(--font-numeric); }
+    .font-header { font-family: var(--font-header); }
+    
+    @keyframes lcd-flicker {
+      0% { opacity: 0.97; }
+      5% { opacity: 1; }
+      10% { opacity: 0.98; }
+      15% { opacity: 0.99; }
+      20% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+
+    /* Digital Scale LCD Effect */
+    .lcd-display {
+      background: #111827;
+      color: #00f2ff; /* Electric Blue */
+      text-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+      border: 2px solid #374151;
+      animation: lcd-flicker 4s infinite linear;
+    }
+    .dark .lcd-display {
+      background: #000;
+      color: #fbbf24; /* Accent Gold */
+      text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+    }
+    
+    /* Hide scrollbar for cleaner look but keep functionality */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #3b82f6;
+      border-radius: 10px;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "mongodb": "https://esm.sh/mongodb@^7.0.0"
+  }
+}
+</script>
+</head>
+<body class="bg-slate-50 text-slate-900 transition-colors duration-300">
+  <div id="root"></div>
+</body>
+</html>

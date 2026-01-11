@@ -1,0 +1,7 @@
+{
+  "name": "office lens .",
+  "description": "A high-end, premium entry management system for weight-sensitive inventory, featuring digital scale displays, smart quantity controls, and secure data export.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
