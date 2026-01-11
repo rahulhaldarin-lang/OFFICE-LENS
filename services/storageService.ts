@@ -15,6 +15,7 @@ export const storageService = {
 
   saveEntries: (entries: InventoryEntry[]): void => {
     try {
+      // Local Cache Save only
       localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
     } catch (e) {
       console.error('Failed to save entries:', e);

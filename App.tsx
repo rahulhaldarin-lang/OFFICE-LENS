@@ -10,7 +10,7 @@ import { HelpModal } from './components/HelpModal';
 import { Notebook } from './components/Notebook';
 import { Theme, InventoryEntry, User, AppSettings } from './types';
 import { storageService } from './services/storageService';
-import { Plus, List, Zap, User as UserIcon, Trash2, ArrowLeft, Receipt, Star, ExternalLink, BookOpen, ChevronRight, Edit2, Phone, Globe, Info, X } from 'lucide-react';
+import { Plus, List, User as UserIcon, Trash2, ArrowLeft, Globe, Info, X } from 'lucide-react';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<Theme>(() => 
@@ -48,15 +48,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem('app_settings', JSON.stringify(settings));
-  }, [settings]);
-
-  useEffect(() => {
     localStorage.setItem('app_users', JSON.stringify(users));
-  }, [users]);
-
-  useEffect(() => {
     localStorage.setItem('current_user_id', currentUserId);
-  }, [currentUserId]);
+  }, [settings, users, currentUserId]);
 
   useEffect(() => {
     const saved = storageService.getEntries();
@@ -160,7 +154,6 @@ const App: React.FC = () => {
         onShowHelp={() => setShowHelp(true)}
       />
 
-      {/* Global Back Button */}
       {view !== 'form' && (
         <button
           onClick={goBack}
@@ -180,13 +173,9 @@ const App: React.FC = () => {
                   <Plus className="w-8 h-8 text-blue-500" />
                   Live Entry
                 </h2>
-                
                 {activeUser && (
                   <div className="flex items-center gap-3 animate-in slide-in-from-left-4 duration-500">
-                    <button 
-                      onClick={() => setShowBilling(true)}
-                      className="group flex items-center gap-3 text-left hover:bg-white dark:hover:bg-slate-800 p-2 -ml-2 rounded-2xl transition-all"
-                    >
+                    <button onClick={() => setShowBilling(true)} className="group flex items-center gap-3 text-left hover:bg-white dark:hover:bg-slate-800 p-2 -ml-2 rounded-2xl transition-all">
                       <div className="relative">
                         {activeUser.avatar ? (
                           <img src={activeUser.avatar} className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-slate-900 shadow-lg group-hover:scale-110 transition-transform" alt="Profile" />
@@ -213,13 +202,7 @@ const App: React.FC = () => {
               <List className="w-6 h-6 text-blue-500" />
               Archives
             </h2>
-            <EntryList 
-              entries={filteredEntries} 
-              allEntries={entries.filter(e => !e.isDeleted).sort(sortById)}
-              onDelete={handleSoftDelete} 
-              onUpdate={handleUpdateEntry}
-              currentUser={activeUser}
-            />
+            <EntryList entries={filteredEntries} allEntries={entries.filter(e => !e.isDeleted).sort(sortById)} onDelete={handleSoftDelete} onUpdate={handleUpdateEntry} currentUser={activeUser} />
           </div>
         ) : (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -227,15 +210,7 @@ const App: React.FC = () => {
                <Trash2 className="w-6 h-6" />
                Bin
              </h2>
-             <EntryList 
-              isTrashView
-              entries={trashedEntries} 
-              allEntries={[]}
-              onDelete={handlePermanentDelete} 
-              onRestore={handleRestoreEntry}
-              onUpdate={() => {}}
-              currentUser={activeUser}
-            />
+             <EntryList isTrashView entries={trashedEntries} allEntries={[]} onDelete={handlePermanentDelete} onRestore={handleRestoreEntry} onUpdate={() => {}} currentUser={activeUser} />
           </div>
         )}
       </main>
@@ -246,15 +221,7 @@ const App: React.FC = () => {
         <span className="flex items-center gap-1"><Info className="w-3 h-3"/> Precision Tracking Hub</span>
       </footer>
 
-      {showBilling && activeUser && (
-        <BillingModal 
-          user={activeUser}
-          entries={filteredEntries}
-          totalWeight={totalWeight}
-          onClose={() => setShowBilling(false)}
-        />
-      )}
-
+      {showBilling && activeUser && <BillingModal user={activeUser} entries={filteredEntries} totalWeight={totalWeight} onClose={() => setShowBilling(false)} />}
       {showOwnerDetails && <OwnerDetailsModal onClose={() => setShowOwnerDetails(false)} />}
       {showContact && <ContactModal onClose={() => setShowContact(false)} />}
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
@@ -262,26 +229,11 @@ const App: React.FC = () => {
       {showNotebook && <Notebook onClose={() => setShowNotebook(false)} />}
 
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-full shadow-2xl border border-slate-200 dark:border-slate-700 z-50">
-        <button
-          onClick={() => setView('form')}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${
-            view === 'form'
-            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
-            : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400'
-          }`}
-        >
+        <button onClick={() => setView('form')} className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${view === 'form' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
           <Plus className="w-5 h-5" />
           <span className="font-bold text-[10px] uppercase tracking-widest">New Entry</span>
         </button>
-
-        <button
-          onClick={() => setView('list')}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${
-            view === 'list' || view === 'trash'
-            ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' 
-            : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400'
-          }`}
-        >
+        <button onClick={() => setView('list')} className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${view === 'list' || view === 'trash' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
           <List className="w-5 h-5" />
           <span className="font-bold text-[10px] uppercase tracking-widest">Archives</span>
         </button>

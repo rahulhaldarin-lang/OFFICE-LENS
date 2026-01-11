@@ -216,43 +216,19 @@ export const Header: React.FC<HeaderProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col max-h-[480px]">
-                    <div className="px-6 py-5 bg-slate-50/50 dark:bg-slate-800/20 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Personnel</p>
-                      <button onClick={() => setIsAddingUser(true)} className="p-2 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20 hover:scale-110 active:scale-90 transition-all">
-                        <Plus className="w-4 h-4" />
-                      </button>
+                  <div className="flex flex-col max-h-[380px]">
+                    <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">User Accounts</p>
+                      <button onClick={() => setIsAddingUser(true)} className="p-1.5 bg-blue-600 text-white rounded-lg shadow-md"><Plus className="w-4 h-4" /></button>
                     </div>
-                    
-                    <div className="flex-1 overflow-y-auto p-2 custom-scrollbar space-y-1">
+                    <div className="flex-1 overflow-y-auto p-2 space-y-1">
                       {users.map(user => (
                         <div key={user.id} className="group flex items-center gap-1">
-                          <button
-                            onClick={() => {
-                              setCurrentUserId(user.id);
-                              setIsUserMenuOpen(false);
-                            }}
-                            className={`flex-1 flex items-center gap-3 p-3 rounded-2xl transition-all ${
-                              currentUserId === user.id 
-                              ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/30' 
-                              : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
-                            }`}
-                          >
-                            {user.avatar ? (
-                              <img src={user.avatar} className="w-8 h-8 rounded-lg object-cover" alt="Av" />
-                            ) : (
-                              <div className="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
-                                <UserIcon className="w-4 h-4 text-slate-400" />
-                              </div>
-                            )}
-                            <p className="text-xs font-black truncate">{user.name}</p>
+                          <button onClick={() => { setCurrentUserId(user.id); setIsUserMenuOpen(false); }} className={`flex-1 flex items-center gap-3 p-3 rounded-2xl transition-all ${currentUserId === user.id ? 'bg-blue-600 text-white' : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'}`}>
+                             <div className="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-black">{user.name.charAt(0)}</div>
+                             <p className="text-xs font-black truncate">{user.name}</p>
                           </button>
-                          <button 
-                            onClick={() => setEditingUser(user)} 
-                            className="p-3 opacity-0 group-hover:opacity-100 text-slate-300 hover:text-blue-600 transition-all"
-                          >
-                            <Edit2 className="w-3.5 h-3.5" />
-                          </button>
+                          <button onClick={() => setEditingUser(user)} className="p-2 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-blue-500 transition-opacity"><Edit2 className="w-3.5 h-3.5" /></button>
                         </div>
                       ))}
                     </div>
@@ -262,23 +238,12 @@ export const Header: React.FC<HeaderProps> = ({
             )}
           </div>
 
-          <button
-            onClick={onViewTrash}
-            className="relative p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:ring-2 hover:ring-red-400 hover:text-red-500 transition-all border border-transparent dark:border-slate-700 sm:block hidden"
-            title="Trash"
-          >
+          <button onClick={onViewTrash} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:ring-2 hover:ring-red-400 relative">
             <Trash2 className="w-5 h-5" />
-            {trashCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[8px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">
-                {trashCount}
-              </span>
-            )}
+            {trashCount > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[8px] font-bold rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">{trashCount}</span>}
           </button>
 
-          <button
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:ring-2 hover:ring-blue-400 transition-all border border-transparent dark:border-slate-700"
-          >
+          <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
             {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
           </button>
         </div>
